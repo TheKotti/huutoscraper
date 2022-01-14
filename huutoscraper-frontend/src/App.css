@@ -1,0 +1,15 @@
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.row div {
+  margin: 8px;
+  min-width: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+img {
+  max-height: 16px;
+}

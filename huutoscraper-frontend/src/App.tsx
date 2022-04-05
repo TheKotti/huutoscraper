@@ -14,10 +14,11 @@ type Auction = {
 type Config = {
   targetUrls: Array<{ url: string; category: string }>
   blacklist: string[]
+  interval: number
 }
 
 const App = () => {
-  const [config, setConfig] = useState<Config>({ targetUrls: [], blacklist: [] })
+  const [config, setConfig] = useState<Config>({ targetUrls: [], blacklist: [], interval: 30000 })
   const [result, setResult] = useState<Auction[]>([])
 
   const fetchAll = useCallback(() => {
@@ -55,7 +56,7 @@ const App = () => {
     fetchAll()
     setInterval(() => {
       fetchAll()
-    }, 30000)
+    }, config.interval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config])
 
@@ -63,7 +64,7 @@ const App = () => {
     .filter((x: Auction) => {
       const titleWords = x.title
         .toLowerCase()
-        .replace(/[^a-zA-Z0-9 ]/g, '')
+        .replace(/[^a-zA-Z0-9 ]/g, ' ')
         .split(' ')
       const gotem = titleWords.filter((value) => config.blacklist.includes(value)).length > 0
       return !gotem

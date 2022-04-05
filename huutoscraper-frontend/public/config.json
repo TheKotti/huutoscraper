@@ -1,19 +1,45 @@
 {
     "targetUrls": [
-        "https://www.huuto.net/haku/sellernro_not/132641-2301946-1645317-2073413-2479878-2607731-1164405-25199-1645354/sort/newest/category/463",
-        "https://www.huuto.net/haku/sellernro_not/132641-2301946-1645317-2073413-2479878-2607731-1164405-25199-1645354/sort/newest/category/459",
-        "https://www.huuto.net/haku/sellernro_not/132641-2301946-1645317-2073413-2479878-2607731-1164405-25199-1645354/sort/newest/category/461",
-        "https://www.tori.fi/koko_suomi/viihde-elektroniikka/pelikonsolit_ja_pelaaminen?ca=18&cg=5020&c=5027&w=3&st=s&st=g&gc=ps",
-        "https://www.tori.fi/koko_suomi/viihde-elektroniikka/pelikonsolit_ja_pelaaminen?ca=18&cg=5020&c=5027&w=3&st=s&st=g&gc=ps2",
-        "https://www.tori.fi/koko_suomi/viihde-elektroniikka/pelikonsolit_ja_pelaaminen?ca=18&cg=5020&c=5027&w=3&st=s&st=g&gc=ps3",
-        "https://www.tori.fi/koko_suomi/viihde-elektroniikka/pelikonsolit_ja_pelaaminen?ca=18&cg=5020&c=5027&w=3&st=s&st=k&st=u&st=h&st=g&st=b&gc=other",
-        "https://www.huuto.net/haku/sellernro_not/132641-2301946-1645317-2073413-2479878-2607731-1164405-25199-1645354/sort/newest/category/457"
+        {
+            "url": "https://www.huuto.net/haku/sellernro_not/132641-2301946-1645317-2073413-2479878-2607731-1164405-25199-1645354-1532155/sort/newest/category/463",
+            "category": "ps1"
+        },
+        {
+            "url": "https://www.huuto.net/haku/sellernro_not/132641-2301946-1645317-2073413-2479878-2607731-1164405-25199-1645354-1532155/sort/newest/category/459",
+            "category": "ps2"
+        },
+        {
+            "url": "https://www.huuto.net/haku/sellernro_not/132641-2301946-1645317-2073413-2479878-2607731-1164405-25199-1645354-1532155/sort/newest/category/461",
+            "category": "ps3"
+        },
+        {
+            "url": "https://www.tori.fi/koko_suomi/viihde-elektroniikka/pelikonsolit_ja_pelaaminen?ca=18&cg=5020&c=5027&w=3&st=s&st=g&gc=ps",
+            "category": "ps1"
+        },
+        {
+            "url": "https://www.tori.fi/koko_suomi/viihde-elektroniikka/pelikonsolit_ja_pelaaminen?ca=18&cg=5020&c=5027&w=3&st=s&st=g&gc=ps2",
+            "category": "ps2"
+        },
+        {
+            "url": "https://www.tori.fi/koko_suomi/viihde-elektroniikka/pelikonsolit_ja_pelaaminen?ca=18&cg=5020&c=5027&w=3&st=s&st=g&gc=ps3",
+            "category": "ps3"
+        },
+        {
+            "url": "https://www.tori.fi/koko_suomi/viihde-elektroniikka/pelikonsolit_ja_pelaaminen?ca=18&cg=5020&c=5027&w=3&st=s&st=k&st=u&st=h&st=g&st=b&gc=other",
+            "category": "other"
+        },
+        {
+            "url": "https://www.huuto.net/haku/sellernro_not/132641-2301946-1645317-2073413-2479878-2607731-1164405-25199-1645354-1532155/sort/newest/category/457",
+            "category": "other"
+        }
     ],
     "blacklist": [
         "skylanders",
         "nes",
         "snes",
         "n64",
-        "nintendo"
+        "nintendo",
+        "nhl",
+        "fifa"
     ]
 }

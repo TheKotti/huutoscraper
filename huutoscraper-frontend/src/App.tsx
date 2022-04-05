@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import './App.css'
 
 type Auction = {
-  platform: string
+  category: string
   price: string
   timeStamp: Moment
   title: string
@@ -12,7 +12,7 @@ type Auction = {
 }
 
 type Config = {
-  targetUrls: string[]
+  targetUrls: Array<{ url: string; category: string }>
   blacklist: string[]
 }
 
@@ -22,18 +22,19 @@ const App = () => {
 
   const fetchAll = useCallback(() => {
     const results: any = {}
-    config.targetUrls.forEach((url) => {
+    config.targetUrls.forEach((target, i) => {
       axios
         .get('http://localhost:3001', {
           params: {
-            url,
+            url: target.url,
+            category: target.category,
           },
         })
         .then((x) => {
-          const asd = (x.data as any[]).map((x) => {
+          const listing = (x.data as any[]).map((x) => {
             return { ...x, timeStamp: moment(x.timeStamp) } as Auction
           })
-          results[url] = asd
+          results[i] = listing
           if (Object.keys(results).length === config.targetUrls.length) {
             const flattened: Auction[] = Object.values<Auction>(results).flat<Auction[]>()
             setResult(flattened)
@@ -59,7 +60,6 @@ const App = () => {
   }, [config])
 
   const all = result
-    .sort((a: Auction, b: Auction) => b.timeStamp.diff(a.timeStamp) || a.title.localeCompare(b.title))
     .filter((x: Auction) => {
       const titleWords = x.title
         .toLowerCase()
@@ -68,6 +68,7 @@ const App = () => {
       const gotem = titleWords.filter((value) => config.blacklist.includes(value)).length > 0
       return !gotem
     })
+    .sort((a: Auction, b: Auction) => b.timeStamp.diff(a.timeStamp) || a.title.localeCompare(b.title))
 
   return (
     <div className='App'>
@@ -79,7 +80,7 @@ const App = () => {
             <div>{x.price}</div>
 
             <div>
-              <img src={`/${x.platform}.png`} alt=''></img>
+              <img src={`/${x.category}.png`} alt=''></img>
             </div>
 
             <div>

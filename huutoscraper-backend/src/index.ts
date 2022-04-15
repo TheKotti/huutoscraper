@@ -18,16 +18,31 @@ const getHuutoData = (url: string, category: string) =>
       const itemList = dom.window.document.querySelector('#search-grid-container')
       if (!itemList) return []
 
-      const a = Array.from(itemList.children).map((x: any) => {
-        return {
-          title: x.querySelector('a div div.item-card__header div.item-card__header-left div.item-card__title')?.textContent.trim() || '',
-          url: new URL(url).hostname + x.querySelector('a')?.getAttribute('href') || '',
-          timeStamp: moment(x.querySelector('a div div.item-card__header div.item-card__header-left div.item-card__time span span')?.textContent.trim() || '', 'DD.MM.YYYY HH:mm'),
-          price: x.querySelector('a div div.item-card__footer div.item-card__footer-column--right div.item-card__price')?.textContent.trim() || '',
-          category: category,
-        }
-      })
-
+      const a = Array.from(itemList.children)
+        .filter((x: any) =>
+          // Filter out elements without titles, Huuto started doing weird shit with HtmlStyleElements
+          x.querySelector('a div div.item-card__header div.item-card__header-left div.item-card__title')
+        )
+        .map((x: any) => {
+          return {
+            title:
+              x
+                .querySelector('a div div.item-card__header div.item-card__header-left div.item-card__title')
+                ?.textContent.trim() || '',
+            url: new URL(url).hostname + x.querySelector('a')?.getAttribute('href') || '',
+            timeStamp: moment(
+              x
+                .querySelector('a div div.item-card__header div.item-card__header-left div.item-card__time span span')
+                ?.textContent.trim() || '',
+              'DD.MM.YYYY HH:mm'
+            ),
+            price:
+              x
+                .querySelector('a div div.item-card__footer div.item-card__footer-column--right div.item-card__price')
+                ?.textContent.trim() || '',
+            category: category,
+          }
+        })
       return a
     })
     .catch(() => {
@@ -43,15 +58,28 @@ const getToriData = (url: string, category: string) =>
 
       const a = Array.from(itemList.children)
         .filter((x: any) => {
-          const time = x.querySelector('a div.desc_flex div.ad-details-right div.date-cat-container div.date_image')?.textContent.trim()
-          return time?.includes('t�n��n') || false
+          const notBuying = x
+            .querySelector('a div.desc_flex div.ad-details-right div.date-cat-container div.cat_geo')
+            ?.textContent.trim()
+          const time = x
+            .querySelector('a div.desc_flex div.ad-details-right div.date-cat-container div.date_image')
+            ?.textContent.trim()
+          return (time?.includes('t�n��n') && !notBuying.includes('Ostetaan')) || false
         })
         .map((x: any) => {
           return {
             title: x.querySelector('a div.desc_flex div.ad-details-left div.li-title')?.textContent.trim() || '',
             url: x?.getAttribute('href').substring(8) || '',
-            timeStamp: moment(x.querySelector('a div.desc_flex div.ad-details-right div.date-cat-container div.date_image')?.textContent.trim().slice(-5) || '', 'HH:mm'),
-            price: x.querySelector('a div.desc_flex div.ad-details-left div.list-details-container p')?.textContent.trim() || '',
+            timeStamp: moment(
+              x
+                .querySelector('a div.desc_flex div.ad-details-right div.date-cat-container div.date_image')
+                ?.textContent.trim()
+                .slice(-5) || '',
+              'HH:mm'
+            ),
+            price:
+              x.querySelector('a div.desc_flex div.ad-details-left div.list-details-container p')?.textContent.trim() ||
+              '',
             category: category,
           }
         })

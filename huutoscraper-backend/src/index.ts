@@ -15,7 +15,9 @@ const getHuutoData = (url: string, category: string) =>
   axios(url)
     .then((response) => {
       const dom = new jsdom.JSDOM(response.data)
-      const itemList = dom.window.document.querySelector('#search-grid-container')
+      const itemListOptions = dom.window.document.querySelectorAll('#search-grid-container')
+      const itemList = itemListOptions[itemListOptions.length - 1]
+
       if (!itemList) return []
 
       const a = Array.from(itemList.children)

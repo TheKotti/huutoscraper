@@ -1,3 +1,5 @@
+import { Moment } from 'moment'
+
 const axios = require('axios')
 const express = require('express')
 const jsdom = require('jsdom')
@@ -10,6 +12,19 @@ const PORT = 3001
 const app = express()
 app.use(compression())
 app.use(cors())
+
+const getToriTimeStamp = (timeText: string) => {
+  const timeNumber = timeText.match(/\d+/)?.[0] || 1
+  const currentTime: Moment = moment()
+
+  if (timeText.includes('minuutti')) {
+    return currentTime.add(-timeNumber, 'minute')
+  } else if (timeText.includes('tunti')) {
+    return currentTime.add(-timeNumber, 'hour')
+  } else {
+    return currentTime
+  }
+}
 
 const getHuutoData = (url: string, category: string) =>
   axios(url)
@@ -55,33 +70,20 @@ const getToriData = (url: string, category: string) =>
   axios(url)
     .then((response) => {
       const dom = new jsdom.JSDOM(response.data)
-      const itemList = dom.window.document.querySelector('#blocket div.main div div div.list_mode_thumb')
+      const itemList = dom.window.document.querySelector('.sf-result-list')
       if (!itemList) return []
 
       const a = Array.from(itemList.children)
-        .filter((x: any) => {
-          const notBuying = x
-            .querySelector('a div.desc_flex div.ad-details-right div.date-cat-container div.cat_geo')
-            ?.textContent.trim()
-          const time = x
-            .querySelector('a div.desc_flex div.ad-details-right div.date-cat-container div.date_image')
-            ?.textContent.trim()
-          return (time?.includes('t�n��n') && !notBuying.includes('Ostetaan')) || false
+        .filter((x: HTMLElement) => {
+          const time = x.querySelector('.s-text-subtle span')?.textContent.trim()
+          return (time?.includes('minuutti') || time?.includes('tunti')) && x.tagName === 'ARTICLE'
         })
         .map((x: any) => {
           return {
-            title: x.querySelector('a div.desc_flex div.ad-details-left div.li-title')?.textContent.trim() || '',
-            url: x?.getAttribute('href').substring(8) || '',
-            timeStamp: moment(
-              x
-                .querySelector('a div.desc_flex div.ad-details-right div.date-cat-container div.date_image')
-                ?.textContent.trim()
-                .slice(-5) || '',
-              'HH:mm'
-            ),
-            price:
-              x.querySelector('a div.desc_flex div.ad-details-left div.list-details-container p')?.textContent.trim() ||
-              '',
+            title: x.querySelector('div h2 a')?.textContent.trim() || '',
+            url: x.querySelector('div h2 a')?.getAttribute('href').substring(8) || '',
+            timeStamp: getToriTimeStamp(x.querySelector('.s-text-subtle span')?.textContent.trim()),
+            price: x.querySelector('.m-16 .mt-16').textContent.trim() || '',
             category: category,
           }
         })
